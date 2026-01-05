@@ -1,0 +1,260 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "2026 Calendar API",
+    "description": "API for managing calendar events in 2026 with AI-powered features",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "paths": {
+    "/api/events": {
+      "get": {
+        "operationId": "getEvents",
+        "summary": "Get all calendar events",
+        "parameters": [
+          {
+            "name": "startDate",
+            "in": "query",
+            "schema": { "type": "string", "format": "date-time" },
+            "description": "Filter events starting from this date"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "schema": { "type": "string", "format": "date-time" },
+            "description": "Filter events ending before this date"
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "schema": { 
+              "type": "string",
+              "enum": ["work", "personal", "health", "meeting", "appointment", "birthday", "holiday", "other"]
+            },
+            "description": "Filter by event category"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of events",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "events": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Event" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createEvent",
+        "summary": "Create a new calendar event",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/EventInput" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created event",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Event" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/events/{id}": {
+      "put": {
+        "operationId": "updateEvent",
+        "summary": "Update an existing event",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/EventInput" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated event",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Event" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteEvent",
+        "summary": "Delete an event",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Event deleted successfully"
+          }
+        }
+      }
+    },
+    "/api/parse-natural-language": {
+      "post": {
+        "operationId": "parseNaturalLanguage",
+        "summary": "Parse natural language to create an event",
+        "description": "Convert natural language like 'Schedule a meeting next Tuesday at 3pm' into a calendar event",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "input": {
+                    "type": "string",
+                    "description": "Natural language description of the event"
+                  },
+                  "timezone": {
+                    "type": "string",
+                    "description": "User's timezone"
+                  }
+                },
+                "required": ["input"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Parsed event",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Event" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/suggest-times": {
+      "post": {
+        "operationId": "suggestMeetingTimes",
+        "summary": "Suggest optimal meeting times",
+        "description": "Get AI-powered suggestions for the best times to schedule a meeting",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "duration": {
+                    "type": "number",
+                    "description": "Meeting duration in minutes"
+                  },
+                  "participants": {
+                    "type": "number",
+                    "description": "Number of participants"
+                  }
+                },
+                "required": ["duration"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Suggested meeting times",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "suggestions": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Event": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "startDate": { "type": "string", "format": "date-time" },
+          "endDate": { "type": "string", "format": "date-time" },
+          "allDay": { "type": "boolean" },
+          "location": { "type": "string" },
+          "category": {
+            "type": "string",
+            "enum": ["work", "personal", "health", "meeting", "appointment", "birthday", "holiday", "other"]
+          },
+          "color": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        },
+        "required": ["id", "title", "startDate", "endDate"]
+      },
+      "EventInput": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "startDate": { "type": "string", "format": "date-time" },
+          "endDate": { "type": "string", "format": "date-time" },
+          "allDay": { "type": "boolean" },
+          "location": { "type": "string" },
+          "category": {
+            "type": "string",
+            "enum": ["work", "personal", "health", "meeting", "appointment", "birthday", "holiday", "other"]
+          }
+        },
+        "required": ["title", "startDate", "endDate"]
+      }
+    }
+  }
+}

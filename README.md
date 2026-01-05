@@ -1,11 +1,11 @@
-# 2026 Calendar - AI-Powered Calendar Application
+# 2026 Calendar - AI-Powered Calendar Application (OpenAI Apps SDK)
 
-An advanced, production-ready interactive calendar application for 2026 built with **Next.js**, **TypeScript**, **OpenAI's Apps SDK**, and **Model Context Protocol (MCP)** integration. This calendar app showcases the power of AI-driven event management with natural language processing, intelligent scheduling, and context-aware features.
+An advanced, production-ready interactive calendar application for 2026 built with **Next.js**, **TypeScript**, **OpenAI's Apps SDK**, and **Model Context Protocol (MCP)** integration. This is a **ChatGPT Plugin/App** that can be installed directly into ChatGPT for AI-powered calendar management through natural conversation.
 
 ![2026 Calendar](https://img.shields.io/badge/Year-2026-blue)
 ![Next.js](https://img.shields.io/badge/Next.js-14.1-black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue)
-![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4-green)
+![OpenAI Apps SDK](https://img.shields.io/badge/OpenAI-Apps%20SDK-green)
 
 ## 🌟 Features
 
@@ -24,13 +24,20 @@ An advanced, production-ready interactive calendar application for 2026 built wi
 - **Event Reminders**: Configurable notifications (planned)
 
 ### 🤖 AI-Powered Features (OpenAI Apps SDK)
+
+**This is a ChatGPT Plugin/App!** Install it in ChatGPT to manage your calendar through natural conversation.
+
 - **Natural Language Processing**: Create events using plain English
   - "Schedule a meeting next Tuesday at 3pm with the marketing team"
   - "Dentist appointment tomorrow at 2pm"
-- **Smart Scheduling**: AI suggests optimal meeting times
+- **Smart Scheduling**: AI suggests optimal meeting times based on your calendar
 - **Conflict Detection**: Automatically detect scheduling conflicts
 - **Event Summarization**: AI-generated summaries of busy days/weeks
 - **Auto-Categorization**: Automatically categorize events based on content
+- **ChatGPT Integration**: Talk to ChatGPT to manage your calendar
+  - "What do I have scheduled next week?"
+  - "Find a good time for a 1-hour meeting"
+  - "Reschedule my Friday meeting to Monday"
 
 ### 🔄 MCP Integration
 - **Context Persistence**: Maintains calendar state across sessions
@@ -83,6 +90,28 @@ An advanced, production-ready interactive calendar application for 2026 built wi
 5. **Open your browser**
    Navigate to [http://localhost:3000](http://localhost:3000)
 
+## 🔌 Installing as a ChatGPT Plugin
+
+This app can be installed directly into ChatGPT:
+
+1. **Start the development server**
+   ```bash
+   npm run dev
+   ```
+
+2. **In ChatGPT**:
+   - Go to ChatGPT Plugin Store
+   - Choose "Develop your own plugin"
+   - Enter: `localhost:3000`
+   - ChatGPT will discover and install your calendar plugin
+
+3. **Use natural conversation**:
+   - "What meetings do I have next week?"
+   - "Schedule a team standup tomorrow at 9am"
+   - "Find a good time for a 1-hour meeting this week"
+
+See [APPS_SDK.md](./APPS_SDK.md) for detailed Apps SDK documentation.
+
 ### Build for Production
 
 ```bash
@@ -94,30 +123,36 @@ npm start
 
 ```
 /
+├── public/
+│   ├── ai-plugin.json            # ChatGPT plugin manifest
+│   └── openapi.json              # OpenAPI specification for ChatGPT
 ├── src/
 │   ├── app/                      # Next.js app directory
-│   │   ├── layout.tsx           # Root layout
-│   │   └── page.tsx             # Main calendar page
-│   ├── components/              # React components
-│   │   ├── Calendar/            # Calendar views
+│   │   ├── api/                  # API routes for ChatGPT plugin
+│   │   │   ├── events/           # Event CRUD operations
+│   │   │   ├── parse-natural-language/  # NLP endpoint
+│   │   │   ├── suggest-times/    # Smart scheduling endpoint
+│   │   │   └── openapi.json/     # OpenAPI spec endpoint
+│   │   ├── layout.tsx            # Root layout
+│   │   └── page.tsx              # Main calendar page
+│   ├── components/               # React components
+│   │   ├── Calendar/             # Calendar views
 │   │   │   ├── MonthView.tsx
 │   │   │   ├── WeekView.tsx
 │   │   │   ├── DayView.tsx
 │   │   │   └── CalendarHeader.tsx
-│   │   ├── Events/              # Event components
+│   │   ├── Events/               # Event components
 │   │   │   └── EventModal.tsx
-│   │   ├── UI/                  # Shared UI components
-│   │   └── AI/                  # AI integration components
+│   │   ├── UI/                   # Shared UI components
+│   │   └── AI/                   # AI integration components
 │   │       └── NaturalLanguageInput.tsx
-│   ├── lib/                     # Core libraries
-│   │   ├── openai/              # OpenAI Apps SDK integration
-│   │   │   └── client.ts
-│   │   ├── mcp/                 # MCP integration
+│   ├── lib/                      # Core libraries
+│   │   ├── mcp/                  # MCP integration
 │   │   │   └── server.ts
-│   │   ├── calendar/            # Calendar logic
+│   │   ├── calendar/             # Calendar logic
 │   │   │   ├── eventStore.ts
 │   │   │   └── utils.ts
-│   │   └── utils/               # Helper functions
+│   │   └── utils/                # Helper functions
 │   │       └── helpers.ts
 │   ├── hooks/                   # Custom React hooks
 │   │   ├── useCalendar.ts

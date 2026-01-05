@@ -1,0 +1,17 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "2026 Calendar",
+  "name_for_model": "calendar_2026",
+  "description_for_human": "Manage your 2026 calendar with AI-powered event creation and smart scheduling.",
+  "description_for_model": "Plugin for managing calendar events in 2026. Supports creating, updating, deleting, and querying events. Can parse natural language to create events, detect conflicts, and provide smart scheduling suggestions.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "/api/openapi.json"
+  },
+  "logo_url": "/logo.png",
+  "contact_email": "support@2026calendar.com",
+  "legal_info_url": "/legal"
+}

@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import { parseNaturalLanguageToEvent } from '@/lib/openai/client';
 import { CalendarEvent } from '@/types/event';
 
 interface NaturalLanguageInputProps {
@@ -27,20 +26,27 @@ export default function NaturalLanguageInput({
     setSuccess(null);
 
     try {
-      const response = await parseNaturalLanguageToEvent({
-        naturalLanguageInput: input,
-        contextEvents,
-        userTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      // Call API route instead of direct OpenAI
+      const response = await fetch('/api/parse-natural-language', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          input,
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        }),
       });
 
-      if (response.success && response.event) {
-        onEventCreated(response.event);
-        setSuccess(response.message);
-        setInput('');
-        setTimeout(() => setSuccess(null), 3000);
-      } else {
-        setError(response.message);
+      if (!response.ok) {
+        throw new Error('Failed to parse event');
       }
+
+      const event = await response.json();
+      onEventCreated(event);
+      setSuccess('Event created successfully using OpenAI Apps SDK!');
+      setInput('');
+      setTimeout(() => setSuccess(null), 3000);
     } catch (err) {
       setError('Failed to create event from natural language');
       console.error(err);
@@ -66,7 +72,7 @@ export default function NaturalLanguageInput({
           />
         </svg>
         <h3 className="text-lg font-semibold text-gray-800">
-          AI-Powered Event Creation
+          AI-Powered Event Creation (Apps SDK)
         </h3>
       </div>
 
