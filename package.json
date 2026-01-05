@@ -11,21 +11,17 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@openai/mcp-client": "^1.0.0",
-    "@openai/realtime-api-beta": "^0.4.0",
     "date-fns": "^3.0.6",
     "next": "14.1.0",
     "openai": "^4.26.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-beautiful-dnd": "^13.1.1",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/node": "^20.11.5",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
-    "@types/react-beautiful-dnd": "^13.1.8",
     "@types/uuid": "^9.0.7",
     "autoprefixer": "^10.4.17",
     "eslint": "^8.56.0",
